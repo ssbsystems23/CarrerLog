@@ -1,4 +1,5 @@
 from logging.config import fileConfig
+import os
 
 from sqlalchemy import engine_from_config, pool
 
@@ -16,6 +17,13 @@ if config.config_file_name is not None:
 from app.db.base import Base  # noqa: E402
 
 target_metadata = Base.metadata
+
+# Override sqlalchemy.url with environment variable if it exists
+database_url = os.getenv("DATABASE_URL")
+if database_url:
+    # Convert asyncpg to psycopg2 for alembic
+    database_url = database_url.replace("postgresql+asyncpg://", "postgresql+psycopg2://")
+    config.set_main_option("sqlalchemy.url", database_url)
 
 
 def run_migrations_offline() -> None:

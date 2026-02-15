@@ -30,7 +30,7 @@ const newProblemSchema = z.object({
   title: z.string().min(1, "Title is required"),
   company_context: z.string().optional(),
   difficulty: z.enum(["Easy", "Medium", "Hard"], {
-    required_error: "Difficulty is required",
+    errorMap: () => ({ message: "Difficulty is required" }),
   }),
   solved_at: z.string().optional(),
   situation: z.string().refine(htmlNotEmpty, "Situation is required"),

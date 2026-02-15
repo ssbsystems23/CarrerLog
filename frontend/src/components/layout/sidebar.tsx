@@ -20,6 +20,36 @@ const navItems = [
   { to: "/interview-bank", icon: MessageSquare, label: "Interview Bank" },
 ];
 
+interface SidebarProps {
+  onNavigate?: () => void;
+}
+
+function SidebarContent({ onNavigate }: SidebarProps) {
+  return (
+    <nav className="flex-1 space-y-1 p-4">
+      {navItems.map((item) => (
+        <NavLink
+          key={item.to}
+          to={item.to}
+          end={item.to === "/" || item.to === "/problems"}
+          onClick={onNavigate}
+          className={({ isActive }) =>
+            cn(
+              "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+              isActive
+                ? "bg-primary text-primary-foreground"
+                : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+            )
+          }
+        >
+          <item.icon className="h-4 w-4" />
+          {item.label}
+        </NavLink>
+      ))}
+    </nav>
+  );
+}
+
 export function Sidebar() {
   return (
     <aside className="hidden md:flex md:w-64 md:flex-col border-r border-border bg-card">
@@ -27,26 +57,9 @@ export function Sidebar() {
         <LayoutDashboard className="h-6 w-6 text-primary" />
         <span className="text-lg font-bold">CarrerLog</span>
       </Link>
-      <nav className="flex-1 space-y-1 p-4">
-        {navItems.map((item) => (
-          <NavLink
-            key={item.to}
-            to={item.to}
-            end={item.to === "/" || item.to === "/problems"}
-            className={({ isActive }) =>
-              cn(
-                "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
-                isActive
-                  ? "bg-primary text-primary-foreground"
-                  : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-              )
-            }
-          >
-            <item.icon className="h-4 w-4" />
-            {item.label}
-          </NavLink>
-        ))}
-      </nav>
+      <SidebarContent />
     </aside>
   );
 }
+
+export { SidebarContent, navItems };

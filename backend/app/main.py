@@ -28,7 +28,12 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://carrerlog.com"],
+    allow_origins=[
+        "http://localhost:5173",  # Local development
+        "http://carrerlog.com",  # Production HTTP
+        "https://carrerlog.com",  # Production HTTPS
+        "https://www.carrerlog.com",  # Production with www
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

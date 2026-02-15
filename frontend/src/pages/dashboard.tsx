@@ -32,15 +32,15 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 md:space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-        <p className="text-muted-foreground">
+        <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Dashboard</h1>
+        <p className="text-sm md:text-base text-muted-foreground">
           Overview of your professional journey
         </p>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-3 md:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         <StatCard
           title="Total Problems"
           value={stats.total_problems}
@@ -61,10 +61,10 @@ export default function DashboardPage() {
         />
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid gap-4 md:gap-6 lg:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>Difficulty Breakdown</CardTitle>
+            <CardTitle className="text-lg md:text-xl">Difficulty Breakdown</CardTitle>
           </CardHeader>
           <CardContent>
             {Object.keys(stats.problems_by_difficulty).length === 0 ? (
@@ -73,7 +73,7 @@ export default function DashboardPage() {
                 difficulty breakdown.
               </p>
             ) : (
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-2 md:gap-3">
                 {Object.entries(stats.problems_by_difficulty).map(
                   ([difficulty, count]) => (
                     <div key={difficulty} className="flex items-center gap-2">
@@ -96,18 +96,18 @@ export default function DashboardPage() {
       <Separator />
 
       <div>
-        <h2 className="text-xl font-semibold mb-4">Recent Problems</h2>
+        <h2 className="text-lg md:text-xl font-semibold mb-3 md:mb-4">Recent Problems</h2>
         {stats.recent_problems.length === 0 ? (
           <Card>
-            <CardContent className="py-8 text-center">
-              <p className="text-muted-foreground">
+            <CardContent className="py-6 md:py-8 text-center">
+              <p className="text-sm text-muted-foreground">
                 No problems logged yet. Head to the Problems page to start
                 tracking your problem-solving journey.
               </p>
             </CardContent>
           </Card>
         ) : (
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid gap-3 md:gap-4 sm:grid-cols-2 lg:grid-cols-2">
             {stats.recent_problems.map((problem) => (
               <ProblemCard key={problem.id} problem={problem} />
             ))}

@@ -1,6 +1,6 @@
 # Google SSO Setup Instructions
 
-> Step-by-step guide to configure Google OAuth 2.0 for the Developer Dashboard
+> Step-by-step guide to configure Google OAuth 2.0 for CarrerLog
 
 ---
 
@@ -16,7 +16,7 @@
 1. Go to [Google Cloud Console](https://console.cloud.google.com/)
 2. Click **"Select a project"** → **"New Project"**
 3. Enter project details:
-   - **Project name:** `Developer Dashboard` (or any name)
+   - **Project name:** `CarrerLog` (or any name)
    - **Organization:** Leave as default
 4. Click **"Create"**
 5. Wait for project to be created (~10 seconds)
@@ -30,7 +30,7 @@
 3. Click **"Create"**
 
 4. **Fill in OAuth consent screen:**
-   - **App name:** `Developer Dashboard`
+   - **App name:** `CarrerLog`
    - **User support email:** Your email address
    - **App logo:** (Optional) Upload a logo
    - **Application home page:** `http://localhost:5173`
@@ -66,7 +66,7 @@
 
 4. **Create OAuth client ID:**
    - **Application type:** `Web application`
-   - **Name:** `Developer Dashboard Web Client`
+   - **Name:** `CarrerLog Web Client`
 
 5. **Authorized JavaScript origins:**
    - Click **"+ Add URI"**

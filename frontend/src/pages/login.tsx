@@ -44,7 +44,7 @@ export default function LoginPage() {
           </div>
           <CardTitle>Welcome to CarrerLog</CardTitle>
           <CardDescription>
-            Track your professional journey with your personal developer dashboard
+            Track your professional journey with CarrerLog
           </CardDescription>
         </CardHeader>
         <CardContent>

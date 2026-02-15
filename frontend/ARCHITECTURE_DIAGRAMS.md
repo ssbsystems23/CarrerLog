@@ -1,4 +1,4 @@
-# Developer Dashboard - Frontend Architecture Diagrams
+# CarrerLog - Frontend Architecture Diagrams
 
 > Visual representations of the frontend architecture and data flows
 

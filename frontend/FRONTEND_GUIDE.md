@@ -1,4 +1,4 @@
-# Developer Dashboard - Complete Frontend Guide
+# CarrerLog - Complete Frontend Guide
 
 > **For Beginners**: This guide explains everything from scratch so you can understand, debug, and modify the frontend without AI assistance.
 

@@ -1,4 +1,4 @@
-# Developer Dashboard - Master Implementation Plan (MVP)
+# CarrerLog - Master Implementation Plan (MVP)
 
 ## 1. Project Overview
 **Goal:** Build a "Developer Portfolio & Knowledge Base" web application (MVP) where developers can track problems solved (STAR method), manage certifications, and record interview experiences.

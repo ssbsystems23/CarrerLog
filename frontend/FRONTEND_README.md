@@ -1,4 +1,4 @@
-# Developer Dashboard - Frontend Documentation
+# CarrerLog - Frontend Documentation
 
 > Complete documentation for the React/TypeScript frontend
 

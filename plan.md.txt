@@ -1,0 +1,180 @@
+# Developer Dashboard - Master Implementation Plan (MVP)
+
+## 1. Project Overview
+**Goal:** Build a "Developer Portfolio & Knowledge Base" web application (MVP) where developers can track problems solved (STAR method), manage certifications, and record interview experiences.
+**Vision:** A scalable platform that evolves into a "GitHub for Professional Growth."
+**Core Architecture:** Modular Monolith (Python/FastAPI) + SPA (React/Vite).
+
+---
+
+## 2. Technology Stack (Strict Versions)
+**Backend:**
+*   **Language:** Python 3.11+
+*   **Framework:** FastAPI (Latest stable)
+*   **Database:** PostgreSQL 15+
+*   **ORM:** SQLAlchemy 2.0+ (AsyncIO)
+*   **Validation:** Pydantic v2
+*   **Migrations:** Alembic
+*   **Authentication:** Python-jose (JWT) + Passlib (Bcrypt)
+
+**Frontend:**
+*   **Framework:** React 18+ (Vite)
+*   **Language:** TypeScript 5.x
+*   **State Management:** TanStack Query v5 (Server state) + Zustand (Client state)
+*   **Styling:** Tailwind CSS
+*   **UI Components:** Shadcn/UI (Radix Primitives)
+*   **Icons:** Lucide React
+*   **Forms:** React Hook Form + Zod
+
+**Infrastructure:**
+*   **Containerization:** Docker & Docker Compose
+*   **Reverse Proxy:** Nginx (Optional for MVP, useful for prod)
+
+---
+
+## 3. Database Schema (PostgreSQL)
+
+### A. Users (`users`)
+| Column | Type | Constraints | Description |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK, Default: uuid4 | Unique User ID |
+| `email` | String | Unique, Not Null, Index | User Login |
+| `full_name` | String | Not Null | Display Name |
+| `hashed_password` | String | Not Null | Bcrypt Hash |
+| `is_active` | Boolean | Default: True | Soft Delete support |
+| `created_at` | DateTime | Default: Now | Timestamp |
+
+### B. Experiences (`experiences`)
+*Timeline of professional history*
+| Column | Type | Constraints |
+| :--- | :--- | :--- |
+| `id` | UUID | PK |
+| `user_id` | UUID | FK(`users.id`), Index |
+| `company` | String | Not Null |
+| `role` | String | Not Null |
+| `start_date` | Date | Not Null |
+| `end_date` | Date | Nullable (Null = Present) |
+| `description` | Text | Nullable |
+
+### C. Problems (`problems`)
+*The core "STAR" method log*
+| Column | Type | Constraints | Description |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | |
+| `user_id` | UUID | FK(`users.id`), Index | |
+| `title` | String | Not Null | Problem Name |
+| `company_context`| String | Nullable | e.g. "At Google" |
+| `difficulty` | Enum | [Easy, Medium, Hard] | |
+| `situation` | Text | Not Null | **S**TAR context |
+| `task` | Text | Not Null | S**T**AR challenge |
+| `action` | Text | Not Null | ST**A**R solution |
+| `result` | Text | Not Null | STA**R** outcome |
+| `tags` | ARRAY(Str)| Nullable | e.g. ["React", "Perf"]|
+| `solved_at` | Date | Default: Now | |
+
+### D. Certifications (`certifications`)
+| Column | Type | Constraints |
+| :--- | :--- | :--- |
+| `id` | UUID | PK |
+| `user_id` | UUID | FK(`users.id`) |
+| `name` | String | Not Null |
+| `issuer` | String | Not Null |
+| `issue_date` | Date | Not Null |
+| `expiry_date` | Date | Nullable |
+| `credential_url`| String | Nullable |
+
+---
+
+## 4. API Endpoints (FastAPI)
+
+### Authentication
+*   `POST /api/v1/auth/register` - Create account
+*   `POST /api/v1/auth/login` - Get access token (OAuth2PasswordRequestForm)
+*   `GET /api/v1/auth/me` - Get current user profile
+
+### Dashboard
+*   `GET /api/v1/dashboard/stats` - Returns `{ problems_count: int, certs_count: int, ... }`
+
+### Problems
+*   `GET /api/v1/problems` - List with pagination & filters (tags, difficulty)
+*   `POST /api/v1/problems` - Create new problem (Body: ProblemCreateSchema)
+*   `GET /api/v1/problems/{id}` - Get details
+*   `PUT /api/v1/problems/{id}` - Update
+*   `DELETE /api/v1/problems/{id}` - Delete
+
+### Experience & Certs
+*   `GET /api/v1/experiences` - List chronological
+*   `POST /api/v1/experiences` - Add
+*   `GET /api/v1/certifications` - List
+*   `POST /api/v1/certifications` - Add
+
+---
+
+## 5. Step-by-Step Build Instructions (Prompt Strategy)
+
+**Phase 1: Backend Foundation**
+1.  Initialize `backend/` directory with `poetry` or `pip`.
+2.  Create `docker-compose.yml` for PostgreSQL 15.
+3.  Set up `app/core/config.py` (Pydantic Settings) and `app/db/session.py` (Async Engine).
+4.  Implement `app/models/` (SQLAlchemy models) matching the schema above.
+5.  Initialize `alembic`, generate the first migration, and apply it.
+
+**Phase 2: Auth & Core Logic**
+1.  Implement Pydantic schemas in `app/schemas/`.
+2.  Create `app/api/deps.py` for JWT dependency injection.
+3.  Build `auth.py` router (Login/Register).
+4.  Build `problems.py` router (CRUD operations).
+5.  **Test:** Verify using FastAPI Docs (`/docs`).
+
+**Phase 3: Frontend Setup**
+1.  Initialize `frontend/` with Vite + React + TS.
+2.  Install Tailwind CSS and configure `shadcn-ui`.
+3.  Add Shadcn components: `card`, `button`, `input`, `textarea`, `label`, `form`, `badge`, `calendar`, `popover`.
+4.  Setup `axios` instance with interceptors for JWT injection.
+
+**Phase 4: UI Integration**
+1.  Create `DashboardLayout` (Sidebar + Header).
+2.  Build **Problem Log Form**:
+    *   Use `react-hook-form` + `zod` schema.
+    *   Create 4 TextAreas for S-T-A-R fields.
+    *   Connect to `POST /api/v1/problems`.
+3.  Build **Dashboard Home**:
+    *   Fetch stats from `/dashboard/stats`.
+    *   Display "Recent Activity" list.
+
+---
+
+## 6. Folder Structure
+
+```text
+/
+├── docker-compose.yml
+├── README.md
+├── backend/
+│   ├── app/
+│   │   ├── api/
+│   │   │   ├── v1/
+│   │   │   │   ├── endpoints/
+│   │   │   │   │   ├── auth.py
+│   │   │   │   │   ├── problems.py
+│   │   │   │   │   └── dashboard.py
+│   │   │   │   └── api.py
+│   │   │   └── deps.py
+│   │   ├── core/
+│   │   ├── db/
+│   │   ├── models/
+│   │   ├── schemas/
+│   │   └── main.py
+│   ├── alembic/
+│   └── requirements.txt
+└── frontend/
+    ├── src/
+    │   ├── components/
+    │   │   ├── ui/         # Shadcn components
+    │   │   └── layout/     # Sidebar, Header
+    │   ├── hooks/          # React Query hooks
+    │   ├── lib/            # Utils (axios, cn)
+    │   ├── pages/          # Dashboard, Login, Problems
+    │   └── types/
+    ├── package.json
+    └── vite.config.ts

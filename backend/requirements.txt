@@ -1,0 +1,15 @@
+fastapi
+uvicorn[standard]
+sqlalchemy[asyncio]
+asyncpg
+alembic
+pydantic>=2.10
+pydantic-settings
+passlib[bcrypt]
+PyJWT
+python-multipart
+bcrypt==4.0.1
+aiofiles
+psycopg2-binary
+authlib
+httpx

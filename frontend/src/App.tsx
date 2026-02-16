@@ -13,6 +13,7 @@ const ProblemsPage = lazy(() => import("@/pages/problems"));
 const CertificationsPage = lazy(() => import("@/pages/certifications"));
 const LearningsPage = lazy(() => import("@/pages/learnings"));
 const InterviewBankPage = lazy(() => import("@/pages/interview-bank"));
+const ProfilePage = lazy(() => import("@/pages/profile"));
 
 function LoadingFallback() {
   return (
@@ -38,6 +39,7 @@ function App() {
             <Route path="/certifications" element={<CertificationsPage />} />
             <Route path="/learnings" element={<LearningsPage />} />
             <Route path="/interview-bank" element={<InterviewBankPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
           </Route>
         </Routes>
       </Suspense>
